@@ -30,12 +30,12 @@ export class App {
   );
 
   protected readonly secciones = [
-    { id: 'inicio', nombre: 'Inicio', icono: 'M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10' },
-    { id: 'sobre-mi', nombre: 'Sobre mí', icono: 'M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0' },
-    { id: 'stack', nombre: 'Stack tecnológico', icono: 'M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14' },
-    { id: 'proyectos', nombre: 'Proyectos', icono: 'M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z' },
-    { id: 'mentoria', nombre: 'Mentoría y formación', icono: 'M12 4L2 9l10 5 10-5-10-5zM6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5' },
-    { id: 'contacto', nombre: 'Contacto', icono: 'M4 6h16v12H4zM4 7l8 6 8-6' },
+    { id: 'inicio', nombre: 'Inicio', corto: 'Inicio', icono:'M3 12l9-9 9 9M5 10v10h5v-6h4v6h5V10' },
+    { id: 'sobre-mi', nombre: 'Sobre mí', corto: 'Sobre mí', icono: 'M12 12a4 4 0 100-8 4 4 0 000 8zM4 21a8 8 0 0116 0' },
+    { id: 'stack', nombre: 'Stack tecnológico', corto: 'Stack', icono: 'M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14' },
+    { id: 'proyectos', nombre: 'Proyectos', corto: 'Proyectos', icono: 'M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V7z' },
+    { id: 'mentoria', nombre: 'Mentoría y formación', corto: 'Mentoría', icono: 'M12 4L2 9l10 5 10-5-10-5zM6 11.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-4.5' },
+    { id: 'contacto', nombre: 'Contacto', corto: 'Contacto', icono: 'M4 6h16v12H4zM4 7l8 6 8-6' },
   ];
 
   constructor() {
@@ -44,6 +44,11 @@ export class App {
       document.documentElement.classList.toggle('dark', oscuro);
       document.body.classList.toggle('overflow-hidden', this.menuAbierto());
     });
+  }
+
+  @HostListener('window:resize')
+  protected alCambiarTamano(): void {
+    if (window.innerWidth >= 768) this.menuAbierto.set(false);
   }
 
   @HostListener('document:keydown.escape')
