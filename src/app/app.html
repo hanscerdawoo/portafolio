@@ -1,0 +1,123 @@
+<header class="nav">
+  <div class="wrap nav__in">
+    <a class="nav__logo" href="#inicio">HC</a>
+    <button class="nav__toggle" type="button" aria-label="Menú" [attr.aria-expanded]="menuAbierto()" (click)="menuAbierto.set(!menuAbierto())">☰</button>
+    <nav class="nav__links" [class.open]="menuAbierto()">
+      @for (s of secciones; track s.id) {
+        <a [href]="'#' + s.id" (click)="menuAbierto.set(false)">{{ s.nombre }}</a>
+      }
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="inicio" class="hero wrap">
+    <div class="hero__text">
+      <p class="eyebrow">{{ perfil.credenciales.join(' · ') }}</p>
+      <h1>{{ perfil.nombre }}</h1>
+      <p class="lead">{{ perfil.titulo }}</p>
+      <p class="muted">Construyo productos digitales escalables, seguros y listos para crecer.</p>
+      <div class="actions">
+        <a class="btn btn--primary" href="#proyectos">Ver proyectos</a>
+        <a class="btn" href="#contacto">Contactar</a>
+      </div>
+    </div>
+    <img class="hero__photo" src="img/perfil.webp" alt="Retrato de Hanssell Cerda Woo" width="360" height="440">
+  </section>
+
+  <section id="sobre-mi" class="wrap section">
+    <h2>Sobre mí</h2>
+    <div class="about">
+      @for (p of perfil.resumen; track $index) {
+        <p>{{ p }}</p>
+      }
+    </div>
+  </section>
+
+  <section id="stack" class="wrap section">
+    <h2>Stack tecnológico</h2>
+    <div class="grid">
+      @for (g of stack; track g.categoria) {
+        <div class="card">
+          <h3>{{ g.categoria }}</h3>
+          <div class="tags">
+            @for (i of g.items; track i) { <span class="tag">{{ i }}</span> }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section id="proyectos" class="wrap section">
+    <h2>Proyectos</h2>
+    <p class="muted">Código abierto: puedes revisarlos y descargarlos libremente.</p>
+
+    @if (proyectos.length === 0) {
+      <div class="card empty">
+        <p>Estoy preparando los primeros proyectos públicos. Se irán publicando aquí poco a poco.</p>
+        <a class="btn" [href]="perfil.contacto.github" target="_blank" rel="noopener">Ver mi GitHub</a>
+      </div>
+    } @else {
+      <div class="tags filters">
+        @for (t of tecnologias(); track t) {
+          <button type="button" class="tag tag--btn" [class.active]="filtro() === t" (click)="filtro.set(t)">{{ t }}</button>
+        }
+      </div>
+      <div class="grid">
+        @for (p of visibles(); track p.titulo) {
+          <article class="card">
+            @if (p.imagen) { <img class="card__img" [src]="p.imagen" [alt]="p.titulo" loading="lazy"> }
+            <h3>{{ p.titulo }}</h3>
+            <p class="muted">{{ p.descripcion }}</p>
+            <div class="tags">
+              @for (t of p.tecnologias; track t) { <span class="tag">{{ t }}</span> }
+            </div>
+            <div class="actions">
+              <a class="btn btn--sm" [href]="p.repo" target="_blank" rel="noopener">Ver código</a>
+              <a class="btn btn--sm" [href]="zip(p.repo)">Descargar</a>
+              @if (p.demo) { <a class="btn btn--sm" [href]="p.demo" target="_blank" rel="noopener">Demo</a> }
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+
+  <section id="mentoria" class="wrap section">
+    <h2>Mentoría y formación</h2>
+    <p class="muted">{{ mentoria.intro }}</p>
+    <div class="grid grid--2">
+      <div class="card">
+        <h3>Hackatones</h3>
+        <ul class="list">
+          @for (h of mentoria.hackatones; track h.anio) {
+            <li><strong>{{ h.anio }}</strong> · {{ h.detalle }}</li>
+          }
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Cursos impartidos</h3>
+        <ul class="list">
+          @for (c of mentoria.cursos; track c.nombre) {
+            <li>{{ c.nombre }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="wrap section">
+    <h2>Contacto</h2>
+    <p class="muted">¿Tienes un proyecto o idea? Conversemos.</p>
+    <div class="actions">
+      <a class="btn btn--primary" [href]="'mailto:' + perfil.contacto.correo">{{ perfil.contacto.correo }}</a>
+      <a class="btn" [href]="perfil.contacto.whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn" [href]="perfil.contacto.linkedin" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" [href]="perfil.contacto.github" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">© {{ anio }} {{ perfil.nombre }}</div>
+</footer>
